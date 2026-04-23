@@ -1,8 +1,8 @@
 package repository
 
 import (
-	modelo "anuario/interno/model"
 	"testing"
+	modelo "anuario/interno/model"
 )
 
 func TestAdicionarAluno(t *testing.T) {

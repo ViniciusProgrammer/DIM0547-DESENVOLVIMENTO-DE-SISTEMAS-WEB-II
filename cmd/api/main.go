@@ -7,16 +7,16 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	"anuario/internal/controller"
-	customMiddleware "anuario/internal/middleware"
+	"anuario/interno/controller"
+	customMiddleware "anuario/interno/middleware"
 )
 
 func main() {
 	r := chi.NewRouter()
 
-	r.Use(middleware.Logger)         
-	r.Use(middleware.Recoverer)      
-	r.Use(customMiddleware.Logger)   
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(customMiddleware.Logger)
 
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get("/alunos", controller.ListarAlunos)
@@ -28,7 +28,7 @@ func main() {
 		r.Get("/eventos", controller.ListarEventos)
 	})
 
-	log.Println("🚀 Servidor rodando em http://localhost:8080")
+	log.Println("Servidor rodando em http://localhost:8080")
 	if err := http.ListenAndServe(":8080", r); err != nil {
 		log.Fatal(err)
 	}

@@ -7,14 +7,14 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	modelo "anuario/internal/model"
-	repositorio "anuario/internal/repository"
+	"anuario/interno/model"
+	"anuario/interno/repository"
 )
 
-var AlunoRepository = &repositorio.AlunoRepository{}
+var AlunoRepo = &repository.AlunoRepository{}
 
 func ListarAlunos(w http.ResponseWriter, r *http.Request) {
-	alunos := AlunoRepository.ListarTodos()
+	alunos := AlunoRepo.ListarTodos()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(alunos)
 }
@@ -27,7 +27,7 @@ func ObterAluno(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	aluno, encontrado := AlunoRepository.BuscarPorID(id)
+	aluno, encontrado := AlunoRepo.BuscarPorID(id)
 	if !encontrado {
 		http.Error(w, "Aluno não encontrado", http.StatusNotFound)
 		return
@@ -38,13 +38,13 @@ func ObterAluno(w http.ResponseWriter, r *http.Request) {
 }
 
 func CriarAluno(w http.ResponseWriter, r *http.Request) {
-	var novo modelo.Aluno
+	var novo model.Aluno
 	if err := json.NewDecoder(r.Body).Decode(&novo); err != nil {
 		http.Error(w, "JSON inválido", http.StatusBadRequest)
 		return
 	}
 
-	alunoCriado := AlunoRepository.Adicionar(novo)
+	alunoCriado := AlunoRepo.Adicionar(novo)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
@@ -59,13 +59,13 @@ func AtualizarAluno(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var dados modelo.Aluno
+	var dados model.Aluno
 	if err := json.NewDecoder(r.Body).Decode(&dados); err != nil {
 		http.Error(w, "JSON inválido", http.StatusBadRequest)
 		return
 	}
 
-	aluno, ok := AlunoRepository.Atualizar(id, dados)
+	aluno, ok := AlunoRepo.Atualizar(id, dados)
 	if !ok {
 		http.Error(w, "Aluno não encontrado", http.StatusNotFound)
 		return
@@ -83,7 +83,7 @@ func RemoverAluno(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !AlunoRepository.Remover(id) {
+	if !AlunoRepo.Remover(id) {
 		http.Error(w, "Aluno não encontrado", http.StatusNotFound)
 		return
 	}

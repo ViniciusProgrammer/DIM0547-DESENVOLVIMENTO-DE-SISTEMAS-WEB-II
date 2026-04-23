@@ -10,13 +10,12 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"anuario/internal/model"
+	"anuario/interno/model"
 )
 
 func TestListarAlunos(t *testing.T) {
 	req := httptest.NewRequest("GET", "/api/v1/alunos", nil)
 	rec := httptest.NewRecorder()
-
 	ListarAlunos(rec, req)
 
 	if rec.Code != http.StatusOK {
@@ -41,10 +40,9 @@ func TestObterAlunoExistente(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Errorf("esperado 200, obtido %d", rec.Code)
 	}
-
 	var aluno model.Aluno
 	if err := json.NewDecoder(rec.Body).Decode(&aluno); err != nil {
-		t.Fatal("resposta não é um JSON válido")
+		t.Fatal("resposta não é JSON válido")
 	}
 	if aluno.ID != 1 {
 		t.Errorf("esperado ID 1, obtido %d", aluno.ID)
@@ -77,10 +75,9 @@ func TestCriarAluno(t *testing.T) {
 	if rec.Code != http.StatusCreated {
 		t.Errorf("esperado 201, obtido %d", rec.Code)
 	}
-
 	var aluno model.Aluno
 	if err := json.NewDecoder(rec.Body).Decode(&aluno); err != nil {
-		t.Fatal("resposta não é um JSON válido")
+		t.Fatal("resposta não é JSON válido")
 	}
 	if aluno.ID == 0 {
 		t.Error("aluno criado deve ter um ID gerado")
@@ -102,10 +99,9 @@ func TestAtualizarAluno(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Errorf("esperado 200, obtido %d", rec.Code)
 	}
-
 	var aluno model.Aluno
 	if err := json.NewDecoder(rec.Body).Decode(&aluno); err != nil {
-		t.Fatal("resposta não é um JSON válido")
+		t.Fatal("resposta não é JSON válido")
 	}
 	if aluno.Nome != "Atualizado" {
 		t.Errorf("esperado nome 'Atualizado', obtido '%s'", aluno.Nome)
@@ -140,13 +136,11 @@ func TestListarEventos(t *testing.T) {
 	if rec.Header().Get("Content-Type") != "application/json" {
 		t.Error("Content-Type não é application/json")
 	}
-
 	var eventos []model.Evento
 	if err := json.NewDecoder(rec.Body).Decode(&eventos); err != nil {
-		t.Fatal("resposta não é um JSON válido")
+		t.Fatal("resposta não é JSON válido")
 	}
-	
 	if len(eventos) < 2 {
-		t.Error("esperava pelo menos 2 eventos mockados")
+		t.Error("esperava pelo menos 2 eventos")
 	}
 }
