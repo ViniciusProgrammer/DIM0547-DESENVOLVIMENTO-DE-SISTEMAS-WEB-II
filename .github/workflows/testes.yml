@@ -1,0 +1,33 @@
+name: Testes Go (CI)
+
+# Define quando essa Action vai rodar: 
+# Sempre que houver um "push" (envio) ou "pull_request" para a branch "main"
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  testar:
+    name: Rodar Testes
+    runs-on: ubuntu-latest # O servidor do GitHub que vai rodar nosso código
+
+    steps:
+    # Passo 1: Baixar o código do seu repositório para o servidor do GitHub
+    - name: Fazer Checkout do Código
+      uses: actions/checkout@v4
+
+    # Passo 2: Instalar a linguagem Go no servidor do GitHub
+    - name: Configurar o Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '>=1.21.0' # Puxa uma versão recente do Go para rodar
+
+    # Passo 3: Baixar as dependências (o Chi router que usamos)
+    - name: Instalar Dependências
+      run: go mod tidy
+
+    # Passo 4: Rodar o comando de testes que acabamos de fazer!
+    - name: Executar Testes
+      run: go test -v ./...
