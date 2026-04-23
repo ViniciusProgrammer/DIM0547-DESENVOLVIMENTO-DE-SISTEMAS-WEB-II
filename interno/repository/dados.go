@@ -86,26 +86,3 @@ func (r *EventoRepository) ListarTodos() []modelo.Evento {
 	return eventos
 }
 
-// Atualiza os dados de um aluno existente
-func (r *AlunoRepository) Atualizar(id int, dadosAtualizados modelo.Aluno) (modelo.Aluno, bool) {
-	for i, a := range alunos {
-		if a.ID == id {
-			dadosAtualizados.ID = id // Garante que o ID não seja alterado por acidente
-			alunos[i] = dadosAtualizados
-			return dadosAtualizados, true
-		}
-	}
-	return modelo.Aluno{}, false
-}
-
-// Deleta um aluno pelo ID
-func (r *AlunoRepository) Deletar(id int) bool {
-	for i, a := range alunos {
-		if a.ID == id {
-			// Remove o elemento da fatia (slice) do Go
-			alunos = append(alunos[:i], alunos[i+1:]...)
-			return true
-		}
-	}
-	return false
-}
