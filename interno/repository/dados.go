@@ -43,6 +43,27 @@ func (r *AlunoRepository) Adicionar(novo modelo.Aluno) modelo.Aluno {
 	return novo
 }
 
+func (r *AlunoRepository) Atualizar(id int, dados modelo.Aluno) (modelo.Aluno, bool) {
+	for i, a := range alunos {
+		if a.ID == id {
+			dados.ID = id 
+			alunos[i] = dados
+			return dados, true
+		}
+	}
+	return modelo.Aluno{}, false
+}
+
+func (r *AlunoRepository) Remover(id int) bool {
+	for i, a := range alunos {
+		if a.ID == id {
+			alunos = append(alunos[:i], alunos[i+1:]...)
+			return true
+		}
+	}
+	return false
+}
+
 var eventos = []modelo.Evento{
 	{ID: 1, Titulo: "Aula Inaugural", Descricao: "Primeira aula do semestre", Data: "2026-02-15"},
 	{ID: 2, Titulo: "Semana de Tecnologia", Descricao: "Palestras e workshops", Data: "2026-06-20"},
